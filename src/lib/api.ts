@@ -45,7 +45,7 @@ export const getTutors = async (): Promise<Tutor[]> => {
 export const getUnits = async (): Promise<Unit[]> => {
   const { data, error } = await supabase
     .from('units')
-    .select('*, courses!units_course_id_fkey(name), subjects!units_subject_id_fkey(name)')
+    .select('*, courses(name), subjects(name), lessons(*)')
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
@@ -55,9 +55,13 @@ export const getUnits = async (): Promise<Unit[]> => {
     title: unit.title,
     description: unit.description,
     course: unit.courses?.name ?? 'Unknown Course',
-    term: unit.term,
+    term: 1, // Default term since it's not in the current schema
     subject: unit.subjects?.name ?? 'Unknown Subject',
-    lessons: unit.lessons || [],
+    lessons: unit.lessons?.map((lesson: any) => ({
+      id: lesson.id,
+      title: lesson.title,
+      content: lesson.content || '',
+    })) || [],
     progress: unit.progress,
     status: unit.status,
     lastModified: new Date(unit.created_at).toLocaleDateString('en-CA'),
@@ -65,9 +69,9 @@ export const getUnits = async (): Promise<Unit[]> => {
 };
 
 export const getUnitById = async (id: string): Promise<Unit | null> => {
-    const { data, error } = await supabase
+  const { data, error } = await supabase
     .from('units')
-    .select('*, courses!units_course_id_fkey(name), subjects!units_subject_id_fkey(name)')
+    .select('*, courses(name), subjects(name), lessons(*)')
     .eq('id', id)
     .single();
 
@@ -82,9 +86,13 @@ export const getUnitById = async (id: string): Promise<Unit | null> => {
     title: data.title,
     description: data.description,
     course: data.courses?.name ?? 'Unknown Course',
-    term: data.term,
+    term: 1, // Default term since it's not in the current schema
     subject: data.subjects?.name ?? 'Unknown Subject',
-    lessons: data.lessons || [],
+    lessons: data.lessons?.map((lesson: any) => ({
+      id: lesson.id,
+      title: lesson.title,
+      content: lesson.content || '',
+    })) || [],
     progress: data.progress,
     status: data.status,
     lastModified: new Date(data.created_at).toLocaleDateString('en-CA'),
@@ -97,7 +105,7 @@ export const createUnit = async (unitData: Omit<Unit, 'id' | 'lastModified' | 'c
   return data;
 };
 
-export const updateUnit = async (unitId: string, updates: { title: string, description: string, lessons: Lesson[] }): Promise<any> => {
+export const updateUnit = async (unitId: string, updates: { title: string, description: string }): Promise<any> => {
   const { data, error } = await supabase.from('units').update(updates).eq('id', unitId).select().single();
   if (error) throw new Error(error.message);
   return data;
