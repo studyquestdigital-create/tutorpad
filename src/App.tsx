@@ -9,6 +9,7 @@ import ClassroomView from './components/classroom/ClassroomView';
 import UnitListPage from './components/units/UnitListPage';
 import SettingsPage from './components/settings/SettingsPage';
 import ContentManagementPage from './components/content-management/ContentManagementPage';
+import TutorPadPage from './components/tutorpad/TutorPadPage';
 
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('units');
@@ -73,6 +74,7 @@ const AppRouter: React.FC = () => {
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/classroom/:unitId" element={<ClassroomView />} />
+      <Route path="/tutorpad/:unitId" element={<TutorPadPage />} />
     </Routes>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, Edit, Trash2, BookOpen } from 'lucide-react';
+import { Play, Edit, Trash2, BookOpen, Eye } from 'lucide-react';
 import { Unit } from '../../types';
 
 interface UnitCardProps {
@@ -18,6 +18,9 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit, index, onEdit, onDelete }) =>
     navigate(`/classroom/${unit.id}`);
   };
 
+  const handleViewInTutorPad = () => {
+    navigate(`/tutorpad/${unit.id}`);
+  };
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'published': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -70,22 +73,32 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit, index, onEdit, onDelete }) =>
           </div>
         </div>
         
-        <div className="flex gap-2 mt-auto">
+        <div className="grid grid-cols-2 gap-2 mt-auto">
           <motion.button
             onClick={handleStartLesson}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex-1 flex items-center justify-center gap-2 bg-primary-600 text-white py-2 px-3 rounded-lg hover:bg-primary-700 transition-colors text-sm min-h-[44px]"
+            className="flex items-center justify-center gap-2 bg-primary-600 text-white py-2 px-3 rounded-lg hover:bg-primary-700 transition-colors text-sm min-h-[44px]"
           >
             <Play className="w-4 h-4" />
-            Start Lesson
+            Classroom
+          </motion.button>
+          
+          <motion.button
+            onClick={handleViewInTutorPad}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center justify-center gap-2 bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors text-sm min-h-[44px]"
+          >
+            <Eye className="w-4 h-4" />
+            TutorPad
           </motion.button>
           
           <motion.button
             onClick={() => onEdit(unit)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center justify-center p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px]"
+            className="flex items-center justify-center p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors min-h-[44px]"
             title="Edit Unit Topics"
           >
             <Edit className="w-4 h-4 text-gray-600 dark:text-gray-300" />
@@ -95,7 +108,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit, index, onEdit, onDelete }) =>
             onClick={() => onDelete(unit.id)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center justify-center p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/50 hover:border-red-300 transition-colors min-w-[44px] min-h-[44px]"
+            className="flex items-center justify-center p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/50 hover:border-red-300 transition-colors min-h-[44px]"
             title="Delete Unit"
           >
             <Trash2 className="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-red-600" />
