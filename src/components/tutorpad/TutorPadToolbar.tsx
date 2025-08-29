@@ -1,18 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Pen, Trash2 } from 'lucide-react';
+import { Pen, Trash2, Sun, Moon, Plus, Minus } from 'lucide-react';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface TutorPadToolbarProps {
   penActive: boolean;
   onTogglePen: () => void;
   onClearDrawing: () => void;
+  fontSize: number;
+  onFontSizeChange: (increase: boolean) => void;
 }
 
 const TutorPadToolbar: React.FC<TutorPadToolbarProps> = ({
   penActive,
   onTogglePen,
   onClearDrawing,
+  fontSize,
+  onFontSizeChange,
 }) => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <motion.div
       initial={{ x: 100, opacity: 0 }}
@@ -22,6 +29,41 @@ const TutorPadToolbar: React.FC<TutorPadToolbarProps> = ({
     >
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-3">
         <div className="flex flex-col gap-3">
+          {/* Theme Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="w-12 h-12 rounded-xl flex items-center justify-center transition-all min-w-[48px] min-h-[48px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-transparent"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </motion.button>
+
+          {/* Font Size Controls */}
+          <div className="flex flex-col gap-1">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => onFontSizeChange(true)}
+              disabled={fontSize >= 24}
+              className="w-12 h-6 rounded-lg flex items-center justify-center transition-all bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Increase Font Size"
+            >
+              <Plus className="w-3 h-3" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => onFontSizeChange(false)}
+              disabled={fontSize <= 12}
+              className="w-12 h-6 rounded-lg flex items-center justify-center transition-all bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-2 border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Decrease Font Size"
+            >
+              <Minus className="w-3 h-3" />
+            </motion.button>
+          </div>
+
           {/* Pen Tool */}
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -52,6 +94,16 @@ const TutorPadToolbar: React.FC<TutorPadToolbarProps> = ({
           >
             <Trash2 className="w-5 h-5" />
           </motion.button>
+
+          {/* Divider */}
+          <div className="w-full h-px bg-gray-200 dark:bg-gray-600 my-1"></div>
+
+          {/* Font Size Indicator */}
+          <div className="text-center">
+            <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+              {fontSize}px
+            </span>
+          </div>
         </div>
 
         {/* Drawing Status Indicator */}

@@ -24,6 +24,7 @@ const TutorPadPage: React.FC = () => {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [showSidebar, setShowSidebar] = useState(true);
   const [penActive, setPenActive] = useState(false);
+  const [fontSize, setFontSize] = useState(16);
   const canvasRef = useRef<CanvasDraw>(null);
 
   useEffect(() => {
@@ -54,6 +55,10 @@ const TutorPadPage: React.FC = () => {
 
   const handleTogglePen = () => {
     setPenActive(!penActive);
+  };
+
+  const handleFontSizeChange = (increase: boolean) => {
+    setFontSize(prev => increase ? Math.min(prev + 2, 24) : Math.max(prev - 2, 12));
   };
 
   const navigateLesson = (direction: 'prev' | 'next') => {
@@ -250,6 +255,7 @@ const TutorPadPage: React.FC = () => {
                   <div className="prose dark:prose-invert max-w-none">
                     <div 
                       className="text-gray-700 dark:text-gray-300 leading-relaxed"
+                      style={{ fontSize: `${fontSize}px` }}
                       dangerouslySetInnerHTML={{ __html: currentLesson.content }}
                     />
                   </div>
@@ -300,6 +306,8 @@ const TutorPadPage: React.FC = () => {
         penActive={penActive}
         onTogglePen={handleTogglePen}
         onClearDrawing={handleClearDrawing}
+        fontSize={fontSize}
+        onFontSizeChange={handleFontSizeChange}
       />
     </div>
   );
