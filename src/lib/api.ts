@@ -45,7 +45,7 @@ export const getTutors = async (): Promise<Tutor[]> => {
 export const getUnits = async (): Promise<Unit[]> => {
   const { data, error } = await supabase
     .from('units')
-    .select('*, courses(name), subjects(name)')
+    .select('*, courses!units_course_id_fkey(name), subjects!units_subject_id_fkey(name)')
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
@@ -67,7 +67,7 @@ export const getUnits = async (): Promise<Unit[]> => {
 export const getUnitById = async (id: string): Promise<Unit | null> => {
     const { data, error } = await supabase
     .from('units')
-    .select('*, courses(name), subjects(name)')
+    .select('*, courses!units_course_id_fkey(name), subjects!units_subject_id_fkey(name)')
     .eq('id', id)
     .single();
 
