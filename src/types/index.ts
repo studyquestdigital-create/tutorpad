@@ -51,3 +51,17 @@ export interface ToolbarState {
   whiteboardVisible: boolean;
   selectedTool: 'pen' | 'eraser' | 'select' | null;
 }
+
+export interface LessonTopic {
+  id: string;
+  title: string;
+  content: string;
+  type: 'text' | 'image' | 'video';
+  mediaUrl?: string;
+  mediaTitle?: string;
+  order: number;
+}
+
+export interface ExtendedLesson extends Lesson {
+  topics: LessonTopic[];
+}

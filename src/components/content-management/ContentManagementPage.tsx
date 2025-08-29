@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Book, FlaskConical, User } from 'lucide-react';
+import { Book, FlaskConical, User, GraduationCap } from 'lucide-react';
 import CourseEditor from './CourseEditor';
 import SubjectEditor from './SubjectEditor';
 import TutorEditor from './TutorEditor';
+import LessonEditor from './LessonEditor';
 
-type ContentTab = 'courses' | 'subjects' | 'tutors';
+type ContentTab = 'courses' | 'subjects' | 'tutors' | 'lessons';
 
 const ContentManagementPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
@@ -12,6 +13,7 @@ const ContentManagementPage: React.FC = () => {
   const tabs = [
     { id: 'courses', label: 'Courses', icon: Book },
     { id: 'subjects', label: 'Subjects', icon: FlaskConical },
+    { id: 'lessons', label: 'Lessons', icon: GraduationCap },
     { id: 'tutors', label: 'Tutors', icon: User },
   ];
 
@@ -21,6 +23,8 @@ const ContentManagementPage: React.FC = () => {
         return <CourseEditor />;
       case 'subjects':
         return <SubjectEditor />;
+      case 'lessons':
+        return <LessonEditor />;
       case 'tutors':
         return <TutorEditor />;
       default:

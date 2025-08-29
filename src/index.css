@@ -40,3 +40,42 @@
   --color-primary-800: 22 101 52;   /* green-800 */
   --color-primary-900: 20 83 45;    /* green-900 */
 }
+
+/* TipTap Editor Styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.ProseMirror iframe {
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid rgb(var(--color-primary-300));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  background: rgb(var(--color-primary-50));
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.dark .ProseMirror blockquote {
+  background: rgb(var(--color-primary-900) / 0.3);
+  border-left-color: rgb(var(--color-primary-600));
+}
